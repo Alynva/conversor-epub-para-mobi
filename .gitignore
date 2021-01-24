@@ -87,5 +87,5 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
-input/*
-output/*
+files
+session_db.json

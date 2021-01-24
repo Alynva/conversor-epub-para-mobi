@@ -2,9 +2,8 @@
   "name": "conversor-epub-para-mobi",
   "version": "1.0.0",
   "description": "conversor-epub-para-mobi",
-  "main": "index.js",
   "scripts": {
-    "start": "node .",
+    "start": "env-cmd node src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,6 +20,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "email-validator": "^2.0.4",
+    "env-cmd": "^10.1.0",
     "find-remove": "^2.0.3",
     "node-ebook-converter": "^1.0.9",
     "nodemailer": "^6.4.17",
