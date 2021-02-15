@@ -9,7 +9,9 @@ I use my own email \`convert2mobibot@gmail.com\` to do it, so you have to autori
 2. Under ***Approved Personal Document Email List***, select ***Add a new approved e-mail address***.
 3. Enter my \`convert2mobibot@gmail.com\` email address and select ***Add Address***.
 
-Note: if you don't autorize my email, you will receive an email from Amazon saying that I tried send an document and they blocked it. You will receive this email only the first time I try without the authorization and any subsequente attempt will fail without any warning.
+Tip: if you are in mobile, touch on the email address to copy it.
+
+***Note***: if you don't autorize my email, you will receive an email from Amazon saying that I tried send an document and they blocked it. You will receive this email only the first time I try without the authorization and any subsequente attempt will fail without any warning.
 	`, { parse_mode: "Markdown" })
 }
 

@@ -10,15 +10,13 @@ const maintenanceMiddleware = require('./utils/maintenanceMiddleware')
 const saveProfileMiddleware = require('./utils/saveProfileMiddleware')
 const replyWithHelp = require('./utils/replyWithHelp')
 require('./utils/clearFilesFolder')
+const catchErrors = require('./utils/catchErrors');
 
-const emailScene = require('./schenes/email')
+const emailScene = require('./schenes/email');
 
 const bot = new Telegraf(process.env.BOT_TOKEN)
 
-bot.catch((err, ctx) => {
-	ctx.reply("⚠️ Sorry, I had an problem. Try again later.")
-	console.log(`Ooops, encountered an error for ${ctx.updateType}`, err)
-})
+bot.catch(catchErrors)
 
 bot.telegram.setMyCommands([{
 	command: '/channels',
@@ -65,12 +63,12 @@ bot.on('document', async ctx => {
 	const { file_name, file_unique_id, file_id, file_size } = ctx.message.document
 
 	if (file_size > 20000000) {
-		ctx.reply("❌ Sorry, but this file is too big.")
+		ctx.reply(`❌ Sorry, but \`${file_name}\` is too big.`, { parse_mode: "Markdown" })
 		return;
 	}
 
 	if (!/^.*\.[^\\]+$/g.test(file_name)) {
-		ctx.reply("❌ Sorry, but this file doesn't have an extension. It is most common with PDFs and if it is your case try rename it with \".pdf\" at the end.")
+		ctx.reply(`❌ Sorry, but \`${file_name}\` doesn't have an extension. It is most common with PDFs and if it is your case try rename it with \".pdf\" at the end.`, { parse_mode: "Markdown" })
 		return;
 	}
 
@@ -82,7 +80,7 @@ bot.on('document', async ctx => {
 
 	// Atualiza o status da conversa
 	await ctx.replyWithChatAction("typing")
-	await ctx.reply("☁️ Ok, I'm downloading this file right now.")
+	await ctx.reply(`☁️ Ok, I'm downloading \`${file_name}\` right now.`, { parse_mode: "Markdown" })
 
 	// Pega o ID do usuário para criar sua própria pasta de arquivos
 	const user_id = ctx.session.profile.id//ctx.message.from.id
@@ -101,7 +99,7 @@ bot.on('document', async ctx => {
 			.then(response => response.data.pipe(stream))
 	})
 
-	await ctx.reply("✅ Download complete")
+	await ctx.reply(`✅ Download of \`${file_name}\` complete`, { parse_mode: "Markdown" })
 
 	// Avisa que o arquivo será excluído depois de 24 horas
 	if (!ctx.session.lastCleanUpWarning || ctx.session.lastCleanUpWarning < Date.now() - 1000 * 60 * 60 * 24) {
@@ -109,20 +107,22 @@ bot.on('document', async ctx => {
 		await ctx.reply("🕒 Your file will stay with me in at least 24 hours. After that, I'll start some cleaning to keep this service up and running nice")
 	}
 
+	const keyboard = [[{
+		text: "Convert to .mobi",
+		callback_data: 'convert2Mobi:' + file_unique_id,
+	}]]
+
+	if (!file_name.endsWith(".epub")) {
+		keyboard.push([{
+			text: "Send to my Kindle",
+			callback_data: 'send2KindleO:' + file_unique_id,
+		}])
+	}
+
 	// Pergunta qual ação o usuário quer fazer
-	await ctx.reply("❓ Alright, what you want to do with this file?", {
-		reply_markup: {
-			inline_keyboard: [
-				[{
-					text: "Convert to .mobi",
-					callback_data: 'convert2Mobi:' + file_unique_id,
-				}],
-				[{
-					text: "Send to my Kindle",
-					callback_data: 'send2KindleO:' + file_unique_id,
-				}]
-			]
-		}
+	await ctx.reply(`❓ Alright, what you want to do with \`${file_name}\`?`, {
+		parse_mode: "Markdown",
+		reply_markup: { inline_keyboard: keyboard }
 	})
 })
 
@@ -154,11 +154,13 @@ bot.action(/convert2Mobi:(.*)/g, async ctx => {
 		output: "../"+filePath+".mobi", // TODO: remove the original extension
 		silent: true,
 
-		"line-height": "50",
+		// "line-height": "50",
 
 		"mobi-file-type": "both",
 
 		"mobi-ignore-margins": true,
+
+		"enable-heuristics": true,
 	}).then(async () => {
 		await ctx.reply("✅ Conversion complete")
 		await ctx.reply("📬 I'll send it for you now")
@@ -228,7 +230,7 @@ bot.action(/send2Kindle(O|C):(.*)/g, async ctx => {
 
 bot.on("text", ctx => ctx.reply("Use /channels, /email, /help or send me a document."))
 
-bot.launch()
+bot.launch().then(() => console.log('Bot up and running.'))
 
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'))

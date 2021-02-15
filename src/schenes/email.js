@@ -1,5 +1,6 @@
 const validator = require("email-validator")
 const { Scenes } = require('telegraf')
+const sendToKindle = require('../utils/sendToKindle')
 
 const replyWithHelp = require('../utils/replyWithHelp')
 

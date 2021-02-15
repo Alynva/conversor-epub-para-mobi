@@ -14,7 +14,7 @@ async function clearFilesFolder() {
 
 	let users = {}
 	for (const path of Object.keys(result)) {
-		const res = /output\\(\d*)\\(.*)/g.exec(path)
+		const res = /files\\(\d*)\\(.*)/g.exec(path)
 		users[res[1]] = [
 			...(users[res[1]] || []),
 			res[2]
