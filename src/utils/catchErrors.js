@@ -28,7 +28,8 @@ module.exports = (err, ctx, bot) => {
 	// console.log(`[${new Date().toLocaleString()}]`, `Ooops, encountered an error for ${ctx.updateType}`, err)
 
     const telegram = ctx?.telegram || bot?.telegram
-    telegram?.sendMessage?.(Number(process.env.BOT_ERROR_CHAT), `Ctx: ${JSON.stringify(ctx)}
+    if (process.env.BOT_ERROR_CHAT)
+        telegram?.sendMessage?.(Number(process.env.BOT_ERROR_CHAT), `Ctx: ${JSON.stringify(replaceCircular(ctx))}
 
 ${err}`)
 
