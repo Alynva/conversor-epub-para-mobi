@@ -28,7 +28,7 @@ module.exports = (err, ctx, bot) => {
 	// console.log(`[${new Date().toLocaleString()}]`, `Ooops, encountered an error for ${ctx.updateType}`, err)
 
     const telegram = ctx?.telegram || bot?.telegram
-    telegram?.sendMessage?.(Number(process.env.BOT_ERROR_CHAT), `User: ${ctx.from.username}
+    telegram?.sendMessage?.(Number(process.env.BOT_ERROR_CHAT), `Ctx: ${JSON.stringify(ctx)}
 
 ${err}`)
 
