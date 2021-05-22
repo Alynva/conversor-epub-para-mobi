@@ -22,12 +22,13 @@ var replaceCircular = function(val, cache) {
     return val;
 };
 
-module.exports = (err, ctx) => {
+module.exports = (err, ctx, bot) => {
     ctx?.reply?.("⚠️ Sorry, I had an problem. Try again later.")
     // if (!ctx || !ctx.reply) console.log(`[${new Date().toLocaleString()}]`, "Ué", err)
 	// console.log(`[${new Date().toLocaleString()}]`, `Ooops, encountered an error for ${ctx.updateType}`, err)
 
-    ctx.telegram.sendMessage(Number(process.env.BOT_ERROR_CHAT), `User: ${ctx.from.username}
+    const telegram = ctx?.telegram || bot?.telegram
+    telegram?.sendMessage?.(Number(process.env.BOT_ERROR_CHAT), `User: ${ctx.from.username}
 
 ${err}`)
 

@@ -240,7 +240,7 @@ process.once('SIGTERM', () => bot.stop('SIGTERM'))
 process.on('unhandledRejection', (reason, promise) => {
 	bot.stop('unhandledRejection')
 	// console.log(reason?.response?.error_code)
-	catchErrors(reason, promise)
+	catchErrors(reason, promise, bot)
 	launch()
 })
 
