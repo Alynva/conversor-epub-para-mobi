@@ -187,6 +187,7 @@ bot.action(/convert2Mobi:(.*)/g, async ctx => {
 		// Avisa o usuário caso ocorra um erro ao converter
 		await ctx.reply("❌ Sorry, I had a problem while converting this file.")
 		console.error(err)
+		throw err
 	})
 })
 
@@ -230,8 +231,17 @@ bot.action(/send2Kindle(O|C):(.*)/g, async ctx => {
 
 bot.on("text", ctx => ctx.reply("Use /channels, /email, /help or send me a document."))
 
-bot.launch().then(() => console.log('Bot up and running.'))
+const launch = () => bot.launch().then(() => console.log(`[${new Date().toLocaleString()}]`, 'Bot up and running.'))
 
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'))
 process.once('SIGTERM', () => bot.stop('SIGTERM'))
+
+process.on('unhandledRejection', (reason, promise) => {
+	bot.stop('unhandledRejection')
+	// console.log(reason?.response?.error_code)
+	catchErrors(reason, promise)
+	launch()
+})
+
+launch()

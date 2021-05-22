@@ -23,8 +23,9 @@ var replaceCircular = function(val, cache) {
 };
 
 module.exports = (err, ctx) => {
-	ctx.reply("⚠️ Sorry, I had an problem. Try again later.")
-	console.log(`[${new Date().toLocaleString()}]`, `Ooops, encountered an error for ${ctx.updateType}`, err)
+    ctx?.reply?.("⚠️ Sorry, I had an problem. Try again later.")
+    // if (!ctx || !ctx.reply) console.log(`[${new Date().toLocaleString()}]`, "Ué", err)
+	// console.log(`[${new Date().toLocaleString()}]`, `Ooops, encountered an error for ${ctx.updateType}`, err)
 	fs.appendFile("./log.txt", `
 \n======[START]======\n
 [${new Date().toLocaleString()}]
@@ -32,8 +33,6 @@ module.exports = (err, ctx) => {
 ${err}
 
 ${err.stack}
-
-${console.trace()}
 
 ${JSON.stringify(replaceCircular(ctx))}
 \n======[STOP]=======\n
