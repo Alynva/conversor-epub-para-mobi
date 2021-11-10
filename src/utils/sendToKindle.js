@@ -1,3 +1,6 @@
+// TODO: mutt -a ebook.mobi -- some@one.org
+// https://gist.github.com/nerab/1410840
+
 const nodemailer = require('nodemailer')
 
 const transporter = nodemailer.createTransport({
