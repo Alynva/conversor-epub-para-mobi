@@ -5,6 +5,8 @@ const axios = require('axios');
 const fs = require('fs/promises')
 const fsSync = require('fs')
 
+require('dotenv').config()
+
 const sendToKindle = require('./utils/sendToKindle')
 const maintenanceMiddleware = require('./utils/maintenanceMiddleware')
 const saveProfileMiddleware = require('./utils/saveProfileMiddleware')
