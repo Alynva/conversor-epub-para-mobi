@@ -166,7 +166,7 @@ bot.on('document', async ctx => {
 	})
 })
 
-bot.on('cancel', async ctx => {
+bot.command('cancel', async ctx => {
 	let message
 
 	if (ctx.session.downloading) {
