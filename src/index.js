@@ -294,8 +294,9 @@ bot.action(/convert2Mobi:(.*)/g, async ctx => {
 		// Avisa o usuário caso ocorra um erro ao converter
 		await ctx.telegram.sendMessage(ctx.chat.id, i18n(ctx.session.lang, 'converting_error', file_name))
 		delete ctx.session.converting
-		console.error(err)
-		throw err
+		// console.error(err) // sempre vem "1"
+		// throw err
+		catchErrors("calibre error: "+err, ctx, bot)
 	})
 })
 

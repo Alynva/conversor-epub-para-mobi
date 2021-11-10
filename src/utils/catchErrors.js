@@ -23,7 +23,7 @@ var replaceCircular = function(val, cache) {
 };
 
 module.exports = i18n => (err, ctx, bot) => {
-    ctx?.reply?.(i18n(ctx.session.lang, 'generic_error'))
+    ctx?.reply?.(i18n(ctx?.session?.lang, 'generic_error'))
     // if (!ctx || !ctx.reply) console.log(`[${new Date().toLocaleString()}]`, "Ué", err)
 	// console.log(`[${new Date().toLocaleString()}]`, `Ooops, encountered an error for ${ctx.updateType}`, err)
 
