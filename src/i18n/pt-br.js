@@ -10,6 +10,7 @@ module.exports = {
 	- @livrosmobiptbr
 	- @livrosmobi
 	- @livrosmobiepub
+	- @bibliotecavirtualbot
 `,
 	'no_lang': availableList => `Por favor, defina o idioma. Os disponíveis são ${availableList.map(l => `'${l}'`).join(", ")}. Ex: "/set_lang pt-br"`,
 	'lang_unavailable': (lang, availableList, current) => `O idioma '${lang}' não está disponível. Os disponíveis são ${availableList.map(l => `'${l}'`).join(", ")}. Atualmente estou usando '${current}'.`,
